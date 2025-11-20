@@ -1,8 +1,21 @@
-
-<div class="min-h-screen p-4 sm:p-6 md:p-8">
-  @if (view() === 'host') {
-    <app-host-dashboard (eventCreated)="onEventCreated($event)" />
-  } @else if (view() === 'guest' && event()) {
-    <app-guest-view [event]="event()!" (reset)="switchToHostView()" />
+<div class="min-h-screen">
+  @switch (currentView()) {
+    @case ('login') {
+      <app-login (loginSuccess)="onLoginSuccess()" />
+    }
+    @case ('dashboard') {
+      <app-host-dashboard (createEvent)="onNavigateToCreateEvent()" />
+    }
+    @case ('createEvent') {
+      <app-event-creator (eventCreated)="onEventCreated($event)" (backToDashboard)="onBackToDashboard()" />
+    }
+    @case ('guest') {
+      @if (event()) {
+        <app-guest-view [event]="event()!" (reset)="switchToHostView()" />
+      } @else {
+        <!-- Fallback if guest view is active but event is null -->
+        <app-login (loginSuccess)="onLoginSuccess()" />
+      }
+    }
   }
 </div>

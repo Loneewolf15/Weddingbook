@@ -16,6 +16,8 @@
       --text-color: #1f2937; /* cool-gray-800 */
       --accent-text-color: var(--primary-color-1, #3b82f6); /* blue-500 */
       --card-bg: #ffffff;
+      --sidebar-bg: #f1f5f9;
+      --main-content-bg: #ffffff;
     }
     .theme-retro {
       font-family: 'Lora', serif;
@@ -23,6 +25,8 @@
       --text-color: #44403c; /* stone-700 */
       --accent-text-color: var(--primary-color-1, #a16207); /* yellow-600 */
       --card-bg: #fffcf6;
+      --sidebar-bg: #f4eee3;
+      --main-content-bg: #fdf6e7;
     }
     .theme-luxury {
       font-family: 'Playfair Display', serif;
@@ -30,12 +34,15 @@
       --text-color: #f3f4f6; /* gray-100 */
       --accent-text-color: var(--primary-color-1, #f59e0b); /* amber-500 */
       --card-bg: #1f2937;
+      --sidebar-bg: #000000;
+      --main-content-bg: #111827;
     }
     :root {
       --primary-color-1: #3b82f6;
       --primary-color-2: #64748b;
       --primary-color-3: #94a3b8;
       --primary-color: var(--primary-color-1);
+      --cover-photo-url: url('https://picsum.photos/seed/wedding/1920/1080');
     }
     body {
       background-color: var(--bg-color, #f3f4f6);
@@ -53,6 +60,11 @@
     }
     .primary-border {
         border-color: var(--primary-color);
+    }
+    .cover-bg {
+      background-image: var(--cover-photo-url);
+      background-size: cover;
+      background-position: center;
     }
   </style>
 <script type="importmap">

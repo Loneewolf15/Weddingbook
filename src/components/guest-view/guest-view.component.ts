@@ -1,15 +1,17 @@
 import { ChangeDetectionStrategy, Component, input, output, signal, inject, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule, NgOptimizedImage } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { WeddingEvent } from '../../models/event.model';
 import { ImageSharpnessService } from '../../services/image-sharpness.service';
 import { GeminiService } from '../../services/gemini.service';
+import { PhotoService } from '../../services/photo.service';
 
 type UploadState = 'idle' | 'capturing' | 'preview' | 'checking' | 'captioning' | 'uploading' | 'success';
 
 @Component({
   selector: 'app-guest-view',
   standalone: true,
-  imports: [CommonModule, NgOptimizedImage],
+  imports: [CommonModule, NgOptimizedImage, FormsModule],
   templateUrl: './guest-view.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -21,6 +23,7 @@ export class GuestViewComponent {
   
   private sharpnessService = inject(ImageSharpnessService);
   private geminiService = inject(GeminiService);
+  private photoService = inject(PhotoService);
 
   uploadState = signal<UploadState>('idle');
   selectedFile = signal<File | null>(null);
@@ -28,11 +31,13 @@ export class GuestViewComponent {
   blurWarning = signal(false);
   isUploading = signal(false);
   geminiCaption = signal('');
+  guestNote = signal('');
   isGeneratingCaption = signal(false);
   cameraError = signal<string | null>(null);
   cameraFacingMode = signal<'user' | 'environment'>('environment');
 
   readonly BLUR_THRESHOLD = 100;
+  readonly isShareApiAvailable = !!navigator.share;
 
   get isGeminiConfigured(): boolean {
     return this.geminiService.isConfigured();
@@ -58,7 +63,6 @@ export class GuestViewComponent {
       }
     } catch (error) {
       console.error("Sharpness check failed:", error);
-      // Fail open, allow upload anyway
     } finally {
       this.uploadState.set('preview');
     }
@@ -66,7 +70,7 @@ export class GuestViewComponent {
   
   async startCamera(): Promise<void> {
     this.uploadState.set('capturing');
-    this.cameraError.set(null); // Clear previous errors
+    this.cameraError.set(null);
     try {
         const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: this.cameraFacingMode() } });
         if (this.videoElement) {
@@ -87,14 +91,12 @@ export class GuestViewComponent {
 
   capturePhoto(): void {
     if (!this.videoElement) return;
-
     const video = this.videoElement.nativeElement;
     const canvas = document.createElement('canvas');
     canvas.width = video.videoWidth;
     canvas.height = video.videoHeight;
     const ctx = canvas.getContext('2d');
     ctx?.drawImage(video, 0, 0, canvas.width, canvas.height);
-
     canvas.toBlob(blob => {
       if (blob) {
         const file = new File([blob], 'capture.jpg', { type: 'image/jpeg' });
@@ -126,27 +128,29 @@ export class GuestViewComponent {
   uploadPhoto(): void {
     this.uploadState.set('uploading');
     this.isUploading.set(true);
-    // Simulate upload process
+    // Simulate upload process and add to PhotoService
     setTimeout(() => {
+      this.photoService.addPhoto({
+        imageUrl: this.previewUrl()!,
+        note: this.guestNote() || this.geminiCaption() || 'No note left.'
+      });
       this.isUploading.set(false);
       this.uploadState.set('success');
-      this.resetPreview();
     }, 2000);
   }
 
   async generateCaption(): Promise<void> {
     const file = this.selectedFile();
     if (!file || !this.isGeminiConfigured) return;
-
     this.isGeneratingCaption.set(true);
     this.uploadState.set('captioning');
-    
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = async () => {
       const base64String = (reader.result as string).split(',')[1];
       const caption = await this.geminiService.generateCaptionForImage(base64String);
       this.geminiCaption.set(caption);
+      this.guestNote.set(caption); // Also populate the note field
       this.isGeneratingCaption.set(false);
       this.uploadState.set('preview');
     };
@@ -165,9 +169,31 @@ export class GuestViewComponent {
     this.previewUrl.set(null);
     this.blurWarning.set(false);
     this.geminiCaption.set('');
+    this.guestNote.set('');
     this.uploadState.set('idle');
   }
+
+  uploadAnother(): void {
+    this.resetPreview();
+  }
   
+  async shareToSocials(): Promise<void> {
+    if (!this.isShareApiAvailable) {
+      alert('Sharing is not supported on this browser.');
+      return;
+    }
+
+    try {
+      await navigator.share({
+        title: `Photos from ${this.event().coupleNames}'s Wedding!`,
+        text: `Join the fun and add your photos to ${this.event().coupleNames}'s wedding album!`,
+        url: window.location.origin,
+      });
+    } catch (error) {
+      console.error('Error sharing link:', error);
+    }
+  }
+
   resetApp(): void {
     this.reset.emit();
   }

@@ -9,4 +9,5 @@ export interface WeddingEvent {
   eventDate: string;
   theme: Theme;
   qrCodeUrl?: string;
+  coverPhotoUrl?: string;
 }
