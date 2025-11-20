@@ -13,6 +13,7 @@ import { EventService } from '../../services/event.service';
 })
 export class HostDashboardComponent {
   createEvent = output<void>();
+  launchSlideshow = output<void>();
 
   authService = inject(AuthService);
   photoService = inject(PhotoService);
@@ -21,6 +22,22 @@ export class HostDashboardComponent {
   photos = this.photoService.photos;
   
   coverPhotoUrl = signal<string | null>(null);
+  slideshowUrl = this.getSlideshowUrl();
+  isLinkCopied = signal(false);
+
+  private getSlideshowUrl(): string {
+    return `${window.location.origin}${window.location.pathname}?view=slideshow`;
+  }
+
+  copySlideshowLink(): void {
+    navigator.clipboard.writeText(this.slideshowUrl).then(() => {
+      this.isLinkCopied.set(true);
+      setTimeout(() => this.isLinkCopied.set(false), 2000);
+    }).catch(err => {
+      console.error('Failed to copy link: ', err);
+      alert('Failed to copy link.');
+    });
+  }
 
   onCoverPhotoSelected(event: Event): void {
     const input = event.target as HTMLInputElement;

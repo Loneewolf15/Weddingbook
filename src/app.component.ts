@@ -4,17 +4,19 @@ import { HostDashboardComponent } from './components/host-dashboard/host-dashboa
 import { GuestViewComponent } from './components/guest-view/guest-view.component';
 import { LoginComponent } from './components/login/login.component';
 import { EventCreatorComponent } from './components/event-creator/event-creator.component';
+import { SlideshowComponent } from './components/slideshow/slideshow.component';
+import { LandingComponent } from './components/landing/landing.component';
 import { EventService } from './services/event.service';
 import { AuthService } from './services/auth.service';
 import { WeddingEvent } from './models/event.model';
 
-type AppView = 'login' | 'dashboard' | 'createEvent' | 'guest';
+type AppView = 'landing' | 'login' | 'dashboard' | 'createEvent' | 'guest' | 'slideshow';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CommonModule, HostDashboardComponent, GuestViewComponent, LoginComponent, EventCreatorComponent],
+  imports: [CommonModule, HostDashboardComponent, GuestViewComponent, LoginComponent, EventCreatorComponent, SlideshowComponent, LandingComponent],
 })
 export class AppComponent {
   private eventService = inject(EventService);
@@ -23,22 +25,32 @@ export class AppComponent {
   private el = inject(ElementRef);
   private cdr = inject(ChangeDetectorRef);
 
-  currentView = signal<AppView>('login');
+  currentView = signal<AppView>('landing');
   event = this.eventService.event;
 
   constructor() {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('view') === 'slideshow') {
+      this.currentView.set('slideshow');
+    }
+
     // Effect to handle view changes based on authentication
     effect(() => {
       const user = this.authService.currentUser();
+      const current = this.currentView();
+
       if (user) {
-        // If user is logged in and there's no active event view, show dashboard
-        if (this.currentView() === 'login') {
+        // If user is logged in and they are on a non-authed page, move to dashboard
+        if (current === 'login' || current === 'landing') {
             this.currentView.set('dashboard');
         }
       } else {
-        // If user logs out, go back to login
-        this.currentView.set('login');
-        this.eventService.clearEvent();
+        // If user logs out (or is not logged in), and they are on a protected page, redirect to landing.
+        const protectedViews: AppView[] = ['dashboard', 'createEvent'];
+        if (protectedViews.includes(current)) {
+            this.currentView.set('landing');
+            this.eventService.clearEvent();
+        }
       }
     });
 
@@ -66,6 +78,10 @@ export class AppComponent {
       }
     });
   }
+
+  onNavigateToLogin(): void {
+    this.currentView.set('login');
+  }
   
   onLoginSuccess(): void {
     this.currentView.set('dashboard');
@@ -74,6 +90,10 @@ export class AppComponent {
   onNavigateToCreateEvent(): void {
     this.currentView.set('createEvent');
   }
+  
+  onLaunchSlideshow(): void {
+    this.currentView.set('slideshow');
+  }
 
   onEventCreated(createdEvent: WeddingEvent): void {
     this.eventService.setEvent(createdEvent);
@@ -81,6 +101,10 @@ export class AppComponent {
   }
 
   onBackToDashboard(): void {
+    // Also remove slideshow param from URL if present
+    if (window.location.search.includes('view=slideshow')) {
+        window.history.pushState({}, '', window.location.pathname);
+    }
     this.currentView.set('dashboard');
   }
 

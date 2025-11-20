@@ -1,0 +1,160 @@
+<div class="bg-[#fcfaf6] text-charcoal font-sans">
+  <header class="absolute inset-x-0 top-0 z-50">
+    <nav class="flex items-center justify-between p-6 lg:px-8" aria-label="Global">
+      <div class="flex lg:flex-1">
+        <a href="#" class="-m-1.5 p-1.5">
+          <span class="text-2xl font-bold" style="color: var(--brand-gold);">OurLens</span>
+        </a>
+      </div>
+      <div class="flex lg:flex-1 lg:justify-end">
+        <button (click)="navigateToLogin.emit()" class="text-sm font-semibold leading-6 text-gray-900">
+          Login <span aria-hidden="true">&rarr;</span>
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <!-- Hero Section -->
+    <div class="relative isolate overflow-hidden pt-32 pb-24 sm:pt-48 sm:pb-32">
+       <div class="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80" aria-hidden="true">
+        <div class="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-[#ffdf7e] to-[#f7c8d0] opacity-30 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]" style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)"></div>
+      </div>
+      <div class="mx-auto max-w-7xl px-6 lg:px-8">
+        <div class="mx-auto max-w-3xl text-center">
+          <h1 class="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl font-serif" style="font-family: 'Playfair Display', serif;">See your wedding through your guests' eyes.</h1>
+          <p class="mt-6 text-lg leading-8 text-gray-700">The candid moments your photographer misses. Turn your guests into photographers with a simple QR code. No app downloads. An instant shared album. A beautiful photo book.</p>
+          <div class="mt-10 flex items-center justify-center gap-x-6">
+            <button (click)="navigateToLogin.emit()" class="rounded-full px-8 py-3.5 text-sm font-semibold text-white shadow-sm hover:opacity-90 transition-opacity focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-600" style="background-color: var(--brand-gold);">Create Your Wedding Code</button>
+          </div>
+          <div class="mt-6 flex items-center justify-center gap-x-2 text-sm text-gray-500">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+            <span>Privacy First. Only guests with the code can view or upload.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3-Column Grid -->
+    <div class="py-24 sm:py-32">
+      <div class="mx-auto max-w-7xl px-6 lg:px-8">
+        <div class="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 sm:gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-3">
+            <div class="flex flex-col items-center text-center">
+              <div class="flex h-12 w-12 items-center justify-center rounded-full bg-amber-100">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--brand-gold);"><path d="M4 4h4v4H4z"/><path d="M10 4h4v4h-4z"/><path d="M16 4h4v4h-4z"/><path d="M4 10h4v4H4z"/><path d="M10 10h4v4h-4z"/><path d="M16 10h4v4h-4z"/><path d="M4 16h4v4H4z"/><path d="M10 16h4v4h-4z"/><path d="M16 16h4v4h-4z"/></svg>
+              </div>
+              <h3 class="mt-5 text-xl font-semibold leading-7 text-gray-900 font-serif">No App Required</h3>
+              <p class="mt-2 text-base leading-7 text-gray-600">Guests just scan the code and snap their photos. No logins, no app store downloads, zero friction.</p>
+            </div>
+            <div class="flex flex-col items-center text-center">
+              <div class="flex h-12 w-12 items-center justify-center rounded-full bg-amber-100">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--brand-gold);"><path d="M17.5 12h-15"/><path d="m6 6 12 12"/><path d="m6 18 12-12"/></svg>
+              </div>
+              <h3 class="mt-5 text-xl font-semibold leading-7 text-gray-900 font-serif">AI Quality Control</h3>
+              <p class="mt-2 text-base leading-7 text-gray-600">Our smart AI helps filter out blurry shots and potential duplicates, keeping your final album clean and beautiful.</p>
+            </div>
+            <div class="flex flex-col items-center text-center">
+              <div class="flex h-12 w-12 items-center justify-center rounded-full bg-amber-100">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--brand-gold);"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg>
+              </div>
+              <h3 class="mt-5 text-xl font-semibold leading-7 text-gray-900 font-serif">Print Ready</h3>
+              <p class="mt-2 text-base leading-7 text-gray-600">Turn the entire gallery into a beautiful, print-ready PDF photo book with one click. Guest notes included!</p>
+            </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Interactive Theme Demo -->
+    <div class="py-24 sm:py-32">
+      <div class="mx-auto max-w-7xl px-6 lg:px-8">
+        <div class="mx-auto max-w-2xl text-center">
+          <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl font-serif" style="font-family: 'Playfair Display', serif;">Match Your Wedding Style</h2>
+          <p class="mt-6 text-lg leading-8 text-gray-600">Your photo gallery should feel like *your* wedding. Choose a theme that fits your vibe perfectly.</p>
+        </div>
+        <div class="mt-16 flex flex-col items-center gap-12">
+          <div class="flex items-center gap-4 rounded-full bg-amber-50 p-2">
+            <button (click)="selectedDemoTheme.set('modern')" class="theme-toggle-btn px-6 py-2 rounded-full text-sm font-semibold" [class.bg-white]="selectedDemoTheme() === 'modern'" [class.text-gray-900]="selectedDemoTheme() === 'modern'" [class.text-gray-500]="selectedDemoTheme() !== 'modern'">Modern Minimalist</button>
+            <button (click)="selectedDemoTheme.set('retro')" class="theme-toggle-btn px-6 py-2 rounded-full text-sm font-semibold" [class.bg-white]="selectedDemoTheme() === 'retro'" [class.text-gray-900]="selectedDemoTheme() === 'retro'" [class.text-gray-500]="selectedDemoTheme() !== 'retro'">Retro Vintage</button>
+          </div>
+          <div class="phone-mockup h-[600px] w-[300px] p-2">
+            <div class="phone-screen w-full h-full overflow-hidden" [class.bg-white]="selectedDemoTheme() === 'modern'" [class.bg-cream-100]="selectedDemoTheme() === 'retro'" style="--tw-bg-opacity: 1; background-color: {{ selectedDemoTheme() === 'modern' ? '#ffffff' : '#fdf6e7' }};">
+               <div class="p-6 text-center">
+                  <h3 class="text-3xl font-bold" [class.font-serif]="selectedDemoTheme() === 'retro'" [class.text-gray-900]="selectedDemoTheme() === 'modern'" [class.text-stone-700]="selectedDemoTheme() === 'retro'">Alex & Jordan</h3>
+                  <p class="text-sm mt-1" [class.text-gray-500]="selectedDemoTheme() === 'modern'" [class.text-stone-500]="selectedDemoTheme() === 'retro'">October 26, 2024</p>
+                  <button class="mt-6 rounded-md px-4 py-2 text-sm font-semibold text-white" [style.background-color]="selectedDemoTheme() === 'modern' ? '#2563eb' : '#a16207'">Upload Photo</button>
+                  <div class="mt-6 grid grid-cols-2 gap-2">
+                      <img src="https://source.unsplash.com/random/200x200/?wedding,couple" class="aspect-square w-full object-cover rounded-md" [class.sepia]="selectedDemoTheme() === 'retro'" alt="mock photo 1">
+                      <img src="https://source.unsplash.com/random/200x200/?wedding,dance" class="aspect-square w-full object-cover rounded-md" [class.sepia]="selectedDemoTheme() === 'retro'" alt="mock photo 2">
+                      <img src="https://source.unsplash.com/random/200x200/?wedding,cake" class="aspect-square w-full object-cover rounded-md" [class.sepia]="selectedDemoTheme() === 'retro'" alt="mock photo 3">
+                      <img src="https://source.unsplash.com/random/200x200/?wedding,rings" class="aspect-square w-full object-cover rounded-md" [class.sepia]="selectedDemoTheme() === 'retro'" alt="mock photo 4">
+                  </div>
+               </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Comparison Section -->
+    <div class="py-24 sm:py-32">
+        <div class="mx-auto max-w-7xl px-6 lg:px-8">
+            <div class="mx-auto max-w-2xl text-center">
+                <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl font-serif" style="font-family: 'Playfair Display', serif;">A Better Way to Capture Memories</h2>
+                <p class="mt-6 text-lg leading-8 text-gray-600">Professional photos take 8 weeks. Disposable cameras are expensive and grainy. Get your photos tomorrow.</p>
+            </div>
+            <div class="mt-16 flow-root">
+                <div class="overflow-x-auto">
+                    <table class="comparison-table w-full min-w-max">
+                        <thead>
+                            <tr>
+                                <th class="text-left font-semibold text-gray-900">Feature</th>
+                                <th class="font-semibold text-gray-900">Disposable Cameras</th>
+                                <th class="font-semibold text-gray-900">#Hashtags</th>
+                                <th class="font-semibold text-white rounded-t-lg" style="background-color: var(--brand-gold);">OurLens</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white">
+                             <tr>
+                                <td class="text-left font-medium text-gray-700">Photo Quality</td>
+                                <td class="text-gray-600">Low (grainy, flash)</td>
+                                <td class="text-gray-600">Varies (compressed)</td>
+                                <td class="text-gray-800 font-medium">High (original quality)</td>
+                            </tr>
+                            <tr>
+                                <td class="text-left font-medium text-gray-700">"Development" Time</td>
+                                <td class="text-gray-600">1-2 Weeks</td>
+                                <td class="text-gray-600">Instant (but scattered)</td>
+                                <td class="text-gray-800 font-medium">Instant</td>
+                            </tr>
+                            <tr>
+                                <td class="text-left font-medium text-gray-700">Storage</td>
+                                <td class="text-gray-600">~27 photos per camera</td>
+                                <td class="text-gray-600">Public platforms</td>
+                                <td class="text-gray-800 font-medium">Unlimited & Private</td>
+                            </tr>
+                             <tr>
+                                <td class="text-left font-medium text-gray-700">Cost</td>
+                                <td class="text-gray-600">$15-25 per camera</td>
+                                <td class="text-gray-600">Free (but public)</td>
+                                <td class="text-gray-800 font-medium">One simple price</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-gray-200">
+      <div class="mx-auto max-w-7xl overflow-hidden px-6 py-12 lg:px-8">
+        <nav class="-mb-6 columns-2 sm:flex sm:justify-center sm:space-x-12" aria-label="Footer">
+          <div class="pb-6"><a href="#" class="text-sm leading-6 text-gray-600 hover:text-gray-900">Pricing</a></div>
+          <div class="pb-6"><a href="#" (click)="$event.preventDefault(); navigateToLogin.emit()" class="text-sm leading-6 text-gray-600 hover:text-gray-900">Login</a></div>
+          <div class="pb-6"><a href="#" class="text-sm leading-6 text-gray-600 hover:text-gray-900">Contact</a></div>
+        </nav>
+        <p class="mt-10 text-center text-xs leading-5 text-gray-500">&copy; 2024 OurLens. All rights reserved.</p>
+      </div>
+    </footer>
+  </main>
+</div>

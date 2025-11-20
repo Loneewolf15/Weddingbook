@@ -1,10 +1,13 @@
 <div class="min-h-screen">
   @switch (currentView()) {
+    @case ('landing') {
+      <app-landing (navigateToLogin)="onNavigateToLogin()" />
+    }
     @case ('login') {
       <app-login (loginSuccess)="onLoginSuccess()" />
     }
     @case ('dashboard') {
-      <app-host-dashboard (createEvent)="onNavigateToCreateEvent()" />
+      <app-host-dashboard (createEvent)="onNavigateToCreateEvent()" (launchSlideshow)="onLaunchSlideshow()" />
     }
     @case ('createEvent') {
       <app-event-creator (eventCreated)="onEventCreated($event)" (backToDashboard)="onBackToDashboard()" />
@@ -16,6 +19,9 @@
         <!-- Fallback if guest view is active but event is null -->
         <app-login (loginSuccess)="onLoginSuccess()" />
       }
+    }
+    @case ('slideshow') {
+       <app-slideshow (close)="onBackToDashboard()" />
     }
   }
 </div>
