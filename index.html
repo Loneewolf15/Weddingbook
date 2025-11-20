@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wedding Photo SaaS</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Lora:ital,wght@0,400;0,700;1,400&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+  <style>
+    /* Base theme styles that will be applied via class bindings */
+    .theme-modern {
+      font-family: 'Inter', sans-serif;
+      --bg-color: #f8fafc; /* cool-gray-50 */
+      --text-color: #1f2937; /* cool-gray-800 */
+      --accent-text-color: var(--primary-color-1, #3b82f6); /* blue-500 */
+      --card-bg: #ffffff;
+    }
+    .theme-retro {
+      font-family: 'Lora', serif;
+      --bg-color: #fdf6e7; /* A warm cream */
+      --text-color: #44403c; /* stone-700 */
+      --accent-text-color: var(--primary-color-1, #a16207); /* yellow-600 */
+      --card-bg: #fffcf6;
+    }
+    .theme-luxury {
+      font-family: 'Playfair Display', serif;
+      --bg-color: #111827; /* gray-900 */
+      --text-color: #f3f4f6; /* gray-100 */
+      --accent-text-color: var(--primary-color-1, #f59e0b); /* amber-500 */
+      --card-bg: #1f2937;
+    }
+    :root {
+      --primary-color-1: #3b82f6;
+      --primary-color-2: #64748b;
+      --primary-color-3: #94a3b8;
+      --primary-color: var(--primary-color-1);
+    }
+    body {
+      background-color: var(--bg-color, #f3f4f6);
+      color: var(--text-color, #111827);
+      transition: background-color 0.3s, color 0.3s;
+    }
+    .primary-btn {
+      background-color: var(--primary-color);
+    }
+    .primary-text {
+      color: var(--primary-color);
+    }
+    .primary-accent-text {
+        color: var(--accent-text-color);
+    }
+    .primary-border {
+        border-color: var(--primary-color);
+    }
+  </style>
+<script type="importmap">
+{
+  "imports": {
+    "rxjs": "https://aistudiocdn.com/rxjs@^7.8.2?conditions=es2015",
+    "rxjs/operators": "https://aistudiocdn.com/rxjs@^7.8.2/operators?conditions=es2015",
+    "rxjs/ajax": "https://aistudiocdn.com/rxjs@^7.8.2/ajax?conditions=es2015",
+    "rxjs/webSocket": "https://aistudiocdn.com/rxjs@^7.8.2/webSocket?conditions=es2015",
+    "rxjs/testing": "https://aistudiocdn.com/rxjs@^7.8.2/testing?conditions=es2015",
+    "rxjs/fetch": "https://aistudiocdn.com/rxjs@^7.8.2/fetch?conditions=es2015",
+    "@angular/platform-browser": "https://next.esm.sh/@angular/platform-browser@^21.0.0?external=rxjs",
+    "@angular/compiler": "https://next.esm.sh/@angular/compiler@^21.0.0?external=rxjs",
+    "@angular/common": "https://next.esm.sh/@angular/common@^21.0.0?external=rxjs",
+    "@angular/common/http": "https://next.esm.sh/@angular/common@^21.0.0/http?external=rxjs",
+    "@angular/core": "https://next.esm.sh/@angular/core@^21.0.0?external=rxjs",
+    "@angular/forms": "https://next.esm.sh/@angular/forms@^21.0.0?external=rxjs",
+    "qrcode": "https://next.esm.sh/qrcode@^1.5.4?external=rxjs",
+    "@google/genai": "https://next.esm.sh/@google/genai@^1.30.0?external=rxjs"
+  }
+}
+</script>
+</head>
+<body class="antialiased">
+  <app-root></app-root>
+</body>
+</html>

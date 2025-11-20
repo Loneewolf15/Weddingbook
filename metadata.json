@@ -1,0 +1,7 @@
+{
+  "name": "Wedding Photo Uploader",
+  "description": "A customizable platform for wedding hosts to collect photos from guests. Features dynamic theming, a unique QR code for sharing, and an AI-powered 'Blur Guard' to ensure photo quality.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}

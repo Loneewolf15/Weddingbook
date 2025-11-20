@@ -1,0 +1,119 @@
+<div class="max-w-2xl mx-auto flex flex-col items-center min-h-[80vh] justify-center text-center transition-all duration-300">
+  
+  <div class="w-full">
+    <div class="mb-4">
+      <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight primary-accent-text" [style.font-family]="event().theme.style === 'Luxury' ? 'Playfair Display, serif' : 'inherit'">
+        {{ event().coupleNames }}
+      </h1>
+      <p class="mt-2 text-lg opacity-80">{{ event().eventDate }}</p>
+    </div>
+
+    @switch (uploadState()) {
+      @case ('idle') {
+        <div class="w-full max-w-md mx-auto space-y-4 animate-fade-in">
+           @if (cameraError()) {
+            <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded-md text-left" role="alert">
+              <p class="font-bold">Camera Error</p>
+              <p>{{ cameraError() }}</p>
+            </div>
+          }
+          <h2 class="text-xl sm:text-2xl font-semibold">Share a Memory</h2>
+          <p class="opacity-80">Capture a photo or upload one from your library to add to the collection.</p>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4">
+            <button (click)="startCamera()" class="group flex flex-col items-center justify-center p-6 rounded-lg border-2 border-dashed primary-border hover:bg-white/10 transition-colors duration-200">
+              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mb-2 opacity-80 group-hover:opacity-100 primary-text"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"></path><circle cx="12" cy="13" r="3"></circle></svg>
+              <span class="font-semibold">Snap Photo</span>
+            </button>
+            <label for="file-upload" class="cursor-pointer group flex flex-col items-center justify-center p-6 rounded-lg border-2 border-dashed primary-border hover:bg-white/10 transition-colors duration-200">
+              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mb-2 opacity-80 group-hover:opacity-100 primary-text"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" x2="12" y1="3" y2="15"></line></svg>
+              <span class="font-semibold">Upload from Library</span>
+              <input id="file-upload" name="file-upload" type="file" class="sr-only" accept="image/*" (change)="onFileSelected($event)">
+            </label>
+          </div>
+        </div>
+      }
+      @case ('capturing') {
+        <div class="w-full max-w-md mx-auto animate-fade-in">
+            <video #videoElement autoplay playsinline class="w-full rounded-lg shadow-lg"></video>
+            <div class="mt-4 flex gap-4 justify-center items-center">
+                <button (click)="capturePhoto()" class="px-6 py-3 rounded-lg font-semibold text-white shadow-md transition-transform hover:scale-105 primary-btn">
+                    Capture
+                </button>
+                <button (click)="switchCamera()" class="p-3 rounded-full bg-black/30 text-white shadow-md transition-transform hover:scale-105 hover:bg-black/50" title="Switch Camera">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 19H4a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h5"/><path d="M13 5h7a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-5"/><path d="m20 12-3-3-3 3"/><path d="m4 12 3 3 3-3"/></svg>
+                </button>
+                <button (click)="stopCamera()" class="px-6 py-3 rounded-lg font-semibold bg-gray-500 text-white shadow-md transition-transform hover:scale-105">
+                    Cancel
+                </button>
+            </div>
+        </div>
+      }
+      @case ('checking') {
+        <div class="flex flex-col items-center justify-center animate-fade-in">
+            <svg class="animate-spin h-10 w-10 primary-text" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+            <p class="mt-4 text-lg">Checking photo quality...</p>
+        </div>
+      }
+      @case ('preview') {
+        <div class="w-full max-w-md mx-auto space-y-4 animate-fade-in">
+          <img [src]="previewUrl()" alt="Selected photo preview" class="rounded-lg shadow-xl w-full object-contain max-h-[40vh]">
+          @if (blurWarning()) {
+            <div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 rounded-md" role="alert">
+              <p class="font-bold">Blur Guard</p>
+              <p>This photo looks a bit blurry. You can still upload it, or try another one!</p>
+            </div>
+          }
+           @if (geminiCaption()) {
+            <div class="text-left p-4 rounded-lg bg-white/10 border border-white/20 italic">
+              "{{ geminiCaption() }}"
+            </div>
+          }
+          <div class="flex flex-col sm:flex-row gap-3">
+             @if(isGeminiConfigured) {
+              <button (click)="generateCaption()" [disabled]="isGeneratingCaption()" class="w-full flex-1 px-4 py-2.5 rounded-lg font-semibold border-2 primary-border transition-colors hover:bg-white/10 disabled:opacity-50 disabled:cursor-not-allowed">
+                @if (isGeneratingCaption()) {
+                    <span class="flex items-center justify-center">
+                        <svg class="animate-spin -ml-1 mr-3 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                        Generating...
+                    </span>
+                } @else {
+                    ✨ Generate Caption
+                }
+              </button>
+            }
+            <button (click)="uploadPhoto()" class="w-full flex-1 px-4 py-2.5 rounded-lg font-semibold text-white shadow-md transition-transform hover:scale-105 primary-btn">Upload</button>
+          </div>
+          <button (click)="resetPreview()" class="text-sm opacity-80 hover:opacity-100">Choose a different photo</button>
+        </div>
+      }
+       @case ('captioning') {
+          <div class="flex flex-col items-center justify-center animate-fade-in">
+            <svg class="animate-spin h-10 w-10 primary-text" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+            <p class="mt-4 text-lg">AI is writing a caption...</p>
+          </div>
+      }
+      @case ('uploading') {
+        <div class="animate-fade-in">
+          <svg class="animate-spin h-10 w-10 primary-text mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+          <p class="mt-4 text-lg">Uploading your photo...</p>
+        </div>
+      }
+      @case ('success') {
+        <div class="animate-fade-in">
+          <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mx-auto primary-text"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+          <h2 class="mt-4 text-3xl font-bold">Thank You!</h2>
+          <p class="mt-2 text-lg">Your photo has been successfully added to the collection.</p>
+          <button (click)="uploadState.set('idle')" class="mt-6 px-6 py-3 rounded-lg font-semibold text-white shadow-md transition-transform hover:scale-105 primary-btn">
+            Upload Another
+          </button>
+        </div>
+      }
+    }
+  </div>
+
+  <footer class="absolute bottom-4 text-center">
+    <button (click)="resetApp()" class="text-xs opacity-50 hover:opacity-80 transition-opacity">
+        Back to Host Dashboard
+    </button>
+  </footer>
+</div>

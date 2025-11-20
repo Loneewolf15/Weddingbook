@@ -1,0 +1,8 @@
+
+<div class="min-h-screen p-4 sm:p-6 md:p-8">
+  @if (view() === 'host') {
+    <app-host-dashboard (eventCreated)="onEventCreated($event)" />
+  } @else if (view() === 'guest' && event()) {
+    <app-guest-view [event]="event()!" (reset)="switchToHostView()" />
+  }
+</div>
