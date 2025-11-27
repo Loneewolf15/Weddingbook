@@ -189,7 +189,16 @@ export class EventCreatorComponent {
       return (lighter + 0.05) / (darker + 0.05);
   }
 
-  private generatePersonalizedQrCode(): Promise<string> {
+  private loadImage(src: string): Promise<HTMLImageElement> {
+    return new Promise((resolve, reject) => {
+      const image = new Image();
+      image.onload = () => resolve(image);
+      image.onerror = (err) => reject(err);
+      image.src = src;
+    });
+  }
+
+  private async generatePersonalizedQrCode(): Promise<string> {
     const guestViewUrl = `${window.location.origin}?event=12345`;
     let primaryColor = this.themeColors()[0] || '#000000';
     let secondaryColor = this.themeColors()[1] || '#FFFFFF';
@@ -206,61 +215,53 @@ export class EventCreatorComponent {
         secondaryColor = '#FFFFFF';
     }
 
-    return new Promise(async (resolve, reject) => {
-        try {
-            const baseQrCodeUrl = await QRCode.toDataURL(guestViewUrl, {
-                errorCorrectionLevel: 'H', type: 'image/png', width: 256, margin: 1,
-                color: { dark: primaryColor, light: '#00000000' }
-            });
-
-            const canvas = document.createElement('canvas');
-            canvas.width = 256;
-            canvas.height = 256;
-            const ctx = canvas.getContext('2d');
-            if (!ctx) return reject(new Error('Could not get canvas context'));
-
-            ctx.fillStyle = secondaryColor;
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            
-            const image = new Image();
-            image.src = baseQrCodeUrl;
-            image.onload = () => {
-                ctx.drawImage(image, 0, 0);
-
-                const getInitials = (names: string): string => {
-                    if (!names) return '';
-                    return names.split(/and|&/i)
-                        .map(name => name.trim().charAt(0).toUpperCase())
-                        .join(' & ');
-                };
-                const initials = getInitials(this.coupleNames());
-                
-                const centerRectSize = canvas.width * 0.4;
-                const centerPos = (canvas.width - centerRectSize) / 2;
-                ctx.fillStyle = secondaryColor;
-                ctx.fillRect(centerPos, centerPos, centerRectSize, centerRectSize);
-
-                ctx.textAlign = 'center';
-                ctx.textBaseline = 'middle';
-                ctx.fillStyle = primaryColor;
-                
-                let fontSize = 48;
-                ctx.font = `bold ${fontSize}px 'Playfair Display', serif`;
-
-                while (ctx.measureText(initials).width > centerRectSize * 0.9 && fontSize > 10) {
-                    fontSize--;
-                    ctx.font = `bold ${fontSize}px 'Playfair Display', serif`;
-                }
-
-                ctx.fillText(initials, canvas.width / 2, canvas.height / 2);
-                
-                resolve(canvas.toDataURL('image/png'));
-            };
-            image.onerror = (err) => reject(err);
-        } catch(err) {
-            reject(err);
-        }
+    const baseQrCodeUrl = await QRCode.toDataURL(guestViewUrl, {
+        errorCorrectionLevel: 'H', type: 'image/png', width: 256, margin: 1,
+        color: { dark: primaryColor, light: '#00000000' }
     });
+
+    const canvas = document.createElement('canvas');
+    canvas.width = 256;
+    canvas.height = 256;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) {
+        throw new Error('Could not get canvas context');
+    }
+
+    ctx.fillStyle = secondaryColor;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    
+    const image = await this.loadImage(baseQrCodeUrl);
+    ctx.drawImage(image, 0, 0);
+
+    const getInitials = (names: string): string => {
+        if (!names) return '';
+        return names.split(/and|&/i)
+            .map(name => name.trim().charAt(0).toUpperCase())
+            .join(' & ');
+    };
+    const initials = getInitials(this.coupleNames());
+    
+    const centerRectSize = canvas.width * 0.4;
+    const centerPos = (canvas.width - centerRectSize) / 2;
+    ctx.fillStyle = secondaryColor;
+    ctx.fillRect(centerPos, centerPos, centerRectSize, centerRectSize);
+
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillStyle = primaryColor;
+    
+    let fontSize = 48;
+    ctx.font = `bold ${fontSize}px 'Playfair Display', serif`;
+
+    while (ctx.measureText(initials).width > centerRectSize * 0.9 && fontSize > 10) {
+        fontSize--;
+        ctx.font = `bold ${fontSize}px 'Playfair Display', serif`;
+    }
+
+    ctx.fillText(initials, canvas.width / 2, canvas.height / 2);
+    
+    return canvas.toDataURL('image/png');
   }
 
   printQrCode(): void {
